@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python predict_rnn.py "$1" "$2"
+python mypackages/predict_rnn.py "$1" "$2"
