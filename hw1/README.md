@@ -12,7 +12,7 @@ python model_cnn.py [input path]
 python model_best.py [input path]
 ```
 
-Run test.sh to do all the procedures mentioned above
+Run test.sh to do all the procedures mentioned above:
 ```bash
 bash test.sh [input path]
 ```
