@@ -1,13 +1,13 @@
 ## HW 1 - Sequence Labeling
 
-# Information
+### Information
 
 Competition Period (Kaggle): 10/05/2017 12:00 - 10/28/2017 12:00
 
 Code Deadline (GitHub): 10/28/2017 23:59
 
 
-# Instructions
+### Instructions
 
 To predict labels of the testing data:
 ```bash
@@ -28,5 +28,5 @@ python model_best.py [input path]
 Run test.sh to do all the procedures mentioned above:
 ```bash
 bash test.sh [input path]
+# The output paths are rnn.mdl, cmm.mdl and best.mdl under hw1/models.
 ```
-The output paths are rnn.mdl, cmm.mdl and best.mdl under hw1/models.
