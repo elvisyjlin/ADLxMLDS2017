@@ -3,7 +3,7 @@ from keras.models import Sequential
 from keras.layers import Bidirectional, TimeDistributed
 from keras.layers import LSTM, Dense, Conv2D, Activation, Dropout, Reshape
 from sklearn.model_selection import train_test_split
-from utils import pad_and_reshape
+from mypackages.utils import pad_and_reshape
 
 ## train the RNN model
 def train_rnn(X_train, y_train, n_timesteps=123, 
