@@ -1,5 +1,5 @@
 import sys
-from utils import predict
+from utils import *
 
 load_timit_dataset(sys.argv[1])
 _, _, X_test, id_test, label_binarizer = preprocess()
