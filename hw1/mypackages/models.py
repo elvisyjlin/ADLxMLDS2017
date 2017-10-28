@@ -1,3 +1,4 @@
+from os.path import join
 from keras.models import Sequential
 from keras.layers import Bidirectional, TimeDistributed
 from keras.layers import LSTM, Dense, Conv2D, Activation, Dropout, Reshape
@@ -44,7 +45,7 @@ def train_rnn(X_train, y_train, n_timesteps=123,
 			  validation_data=(X_valid, y_valid))
 
 	## saves the model
-	model_path = '../models/' + model_name
+	model_path = join('models', model_name)
 	model.save(model_path)
 
 ## train the CNN model
@@ -92,7 +93,7 @@ def train_cnn(X_train, y_train, n_timesteps=123,
 			  validation_data=(X_valid, y_valid))
 
 	## saves the model
-	model_path = '../models/' + model_name
+	model_path = join('models', model_name)
 	model.save(model_path)
 	
 ## train the best model
@@ -137,5 +138,5 @@ def train_best(X_train, y_train, n_timesteps=123,
 			  validation_data=(X_valid, y_valid))
 
 	## saves the model
-	model_path = '../models/' + model_name
+	model_path = join('models', model_name)
 	model.save(model_path)

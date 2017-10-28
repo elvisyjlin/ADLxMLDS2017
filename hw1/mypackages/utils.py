@@ -108,7 +108,7 @@ def predict(model_name, X_test, id_test, label_binarizer,
 							   n_timesteps,X_test.shape[1]))
 
 	## loads the model
-	model_path = '../models/' + model_name
+	model_path = join('models', model_name)
 	model = load_model(model_path)
 
 	## prints information of the model
