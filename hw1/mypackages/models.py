@@ -44,7 +44,7 @@ def train_rnn(X_train, y_train, n_timesteps=123,
 			  validation_data=(X_valid, y_valid))
 
 	## saves the model
-	model_path = model_name
+	model_path = '../models/' + model_name
 	model.save(model_path)
 
 ## train the CNN model
@@ -92,7 +92,7 @@ def train_cnn(X_train, y_train, n_timesteps=123,
 			  validation_data=(X_valid, y_valid))
 
 	## saves the model
-	model_path = model_name
+	model_path = '../models/' + model_name
 	model.save(model_path)
 	
 ## train the best model
@@ -137,5 +137,5 @@ def train_best(X_train, y_train, n_timesteps=123,
 			  validation_data=(X_valid, y_valid))
 
 	## saves the model
-	model_path = model_name
+	model_path = '../models/' + model_name
 	model.save(model_path)

@@ -1,6 +1,6 @@
-./hw1_rnn.sh C:/Users/ZeROa/Workspace/ADLHW1/data/
-./hw1_cnn.sh C:/Users/ZeROa/Workspace/ADLHW1/data/
-./hw1_best.sh C:/Users/ZeROa/Workspace/ADLHW1/data/
-python model_rnn.py C:/Users/ZeROa/Workspace/ADLHW1/data/
-python model_cnn.py C:/Users/ZeROa/Workspace/ADLHW1/data/
-python model_best.py C:/Users/ZeROa/Workspace/ADLHW1/data/
+bash hw1_rnn.sh "$1" "rnn.csv"
+bash hw1_cnn.sh "$1" "cnn.csv"
+bash hw1_best.sh "$1" "best.csv"
+python model_rnn.py "$1"
+python model_cnn.py "$1"
+python model_best.py "$1"

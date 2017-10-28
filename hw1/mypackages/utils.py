@@ -96,7 +96,7 @@ def pad_and_reshape(X_train, y_train, n_timesteps):
 	return X_train, y_train
 
 def predict(model_name, X_test, id_test, label_binarizer, 
-			n_timesteps=123, threshold=0.7):
+			n_timesteps=123, threshold=0.7, output_file='default.csv'):
 	print('# Predicting...')
 
 	## reshape the data to fit the model
@@ -108,7 +108,7 @@ def predict(model_name, X_test, id_test, label_binarizer,
 							   n_timesteps,X_test.shape[1]))
 
 	## loads the model
-	model_path = join('models_hw1/', model_name)
+	model_path = '../models/' + model_name
 	model = load_model(model_path)
 
 	## prints information of the model
@@ -121,11 +121,11 @@ def predict(model_name, X_test, id_test, label_binarizer,
 	y_predict = model.predict(X_test)
 	
 	## postprocesses the predictions to csv format
-	postprocess(y_predict, id_test, label_binarizer, model_name, threshold)
+	postprocess(y_predict, id_test, label_binarizer, model_name, threshold, output_file)
 
 ## Postprocess the results of predictions
 ## if you want to disable threshold, set threshold=None
-def postprocess(y_predict, id_test, label_binarizer, model_name, threshold):
+def postprocess(y_predict, id_test, label_binarizer, model_name, threshold, output_file):
 	print('# Postprocessing...')
 
 	y_predict = y_predict.reshape((y_predict.shape[0]*y_predict.shape[1], y_predict.shape[2]))
@@ -149,6 +149,4 @@ def postprocess(y_predict, id_test, label_binarizer, model_name, threshold):
 	output_csv = predict_table.rename(columns={0: 'id', 1: 'phone_sequence'})
 	
 	output_csv['phone_sequence'] = output_csv['phone_sequence'].map(lambda x: ''.join(i for i, _ in itertools.groupby(x.strip('L'))))
-	output_name = '{}.prediction_thre({}).csv'
-	output_path = join('models_hw1/', output_name.format(model_name, threshold))
-	output_csv.to_csv(output_path, sep=',', header=True, index=False)
+	output_csv.to_csv(output_file, sep=',', header=True, index=False)
