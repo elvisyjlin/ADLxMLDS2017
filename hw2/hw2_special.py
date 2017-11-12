@@ -358,7 +358,7 @@ import numpy as np
 from hw2_utils import Predictions
 
 saver = tf.train.Saver(max_to_keep=max_to_keep)
-predictions = Predictions(msvd, 'data_msvd')
+predictions = Predictions(msvd)
 
 if 'train' in mode:
     if 'load' in mode:
