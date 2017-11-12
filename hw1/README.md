@@ -6,7 +6,6 @@ Competition Period (Kaggle): 10/05/2017 12:00 - 10/28/2017 12:00
 
 Code Deadline (GitHub): 10/28/2017 23:59
 
-
 ### Instructions
 
 To predict labels of the testing data:
