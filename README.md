@@ -9,3 +9,5 @@ By professor [Yun-Nung (Vivian) Chen](http://vivianchen.idv.tw/) and professor [
 Student: CSIE R06922068 Yu-Jing Lin 林裕景
 
 ### HW 1 - Sequence Labeling
+
+### HW 2 - Video Captioning
