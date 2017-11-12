@@ -13,13 +13,14 @@ Code Deadline (GitHub): 11/19/2017 23:59
 
 To predict captions of the testing data:
 ```bash
-hw2_special.sh [the data directory] [output_file]
+bash hw2_special.sh [the data directory] [output_file]
 ```
 
 ### About Models
 
 #### Special Mission
 
+Trained for 600 epochs.  
 Using the simple S2VT model with the following parameters:
 
 ```python
