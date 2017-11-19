@@ -27,10 +27,10 @@ shuffle_training_data = True
 rnn_type = 'gru' # 'lstm' or 'gru'
 use_dropout = None # None or a float number (dropout_rate)
 use_attention = True # Fasle or True
-use_scheduled = True # False or True
-sampling_decaying_rate = 0.999
-sampling_decaying_mode = 'linear' # 'linear or 'exponential'
-sampling_decaying_per_epoch = 2
+use_scheduled = False # False or True
+sampling_decaying_rate = None # a float between 0~1 e.g. 0.99
+sampling_decaying_mode = None # 'linear or 'exponential'
+sampling_decaying_per_epoch = None # an integer
 use_embedding = 'fasttext' # None, 'word2vec', 'glove', or 'fasttext'
 
 model_folder = 'models'
