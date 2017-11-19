@@ -9,11 +9,14 @@ class SentenceEncoder():
         self.stop_words = string.punctuation + '“' + '”'
         self.trantab = str.maketrans('', '', self.stop_words)
         
+        self.vocab = None
         self.word2int = None
         self.int2word = None
         self.bias = None
         
         self.ready = False
+        
+        print('SentenceEncoder initialized.')
         
     def fit(self, sentences, threshold=1):
         word_count = defaultdict(int)
@@ -23,8 +26,8 @@ class SentenceEncoder():
             for word in self.split(sentence):
                 word_count[word] += 1
         
-        vocab = [word for word in word_count if word_count[word] >= threshold]
-        print('Filtered words from {} to {}.'.format(len(word_count), len(vocab)))
+        self.vocab = [word for word in word_count if word_count[word] >= threshold]
+        print('Filtered words from {} to {}.'.format(len(word_count), len(self.vocab)))
         
         self.word2int = {}
         self.int2word = {}
@@ -32,33 +35,42 @@ class SentenceEncoder():
             self.word2int[w] = i
             self.int2word[i] = w
             word_count[w] = num_sentense
-        for i, w in enumerate(sorted(vocab)):
+        for i, w in enumerate(sorted(self.vocab)):
             self.word2int[w] = i + 4
             self.int2word[i + 4] = w
         
-        self.bias = np.array([1.0 * word_count[self.int2word[i]]] for i in self.int2word)
+        self.bias = np.array([1.0 * word_count[self.int2word[i]] for i in self.int2word])
+        self.bias /= np.sum(self.bias)
+        self.bias = np.log(self.bias)
+        self.bias -= np.max(self.bias)
                 
     def split(self, sentence):
         return sentence.translate(self.trantab).lower().split()
     
-    def lookup(self, word):
+    def lookup_int(self, word):
         return self.word2int[word] if word in self.word2int else self.word2int['<unk>']
+    
+    def lookup_word(self, int):
+        return self.int2word[int] if int in self.int2word else '<-1>'
     
     def transform(self, sentence):
         return np.array([self.word2int['<bos>']] + 
-                        [self.lookup(word) for word in self.split(sentence)] + 
+                        [self.lookup_int(word) for word in self.split(sentence)] + 
                         [self.word2int['<eos>']])
         
     def inverse_transform(self, ints):
-        tag_eos = self.lookup('<eos>')
+        tag_eos = self.lookup_int('<eos>')
         if tag_eos in ints:
             ints = ints[:np.argmax(np.array(ints) == tag_eos) + 1]
-        sentence = ' '.join([self.int2word[int] for int in ints])
+        sentence = ' '.join([self.lookup_word(int) for int in ints])
         sentence = sentence.replace('<bos> ', '').replace(' <eos>', '')
         return sentence
 
-    def getBiasVector(self):
+    def get_bias_vector(self):
         return self.bias
+    
+    def get_word_list(self):
+        return self.defaultTags + self.vocab
 
 import json
 import numpy as np
@@ -86,6 +98,7 @@ class MSVD():
         self.ready = False
         self.train_loaded = False
         self.test_loaded = False
+        print('MSVD initialized.')
         
         label_train_path = join(self.path, 'training_label.json')
         with open(label_train_path, 'r', encoding='utf-8') as f:
@@ -120,7 +133,6 @@ class MSVD():
     def load_testing_data(self):
         if self.test_loaded: return
         
-        print('MSVD load_testing_data()')
         feature_test_path = join(self.path, 'testing_data/feat')
             
         index = 0
@@ -140,41 +152,31 @@ class MSVD():
         for index in range(len(self.id_train)):
             id = self.id_train[index]
             choice = 0
-            label = self.sentenceEncoder.transform(self.label_dict[id][choice])
-            label_len = len(label) - 1
-            if label_len > self.training_max_time_steps:
-                self.y_train[index] = np.concatenate((label[:self.training_max_time_steps-1+1], [label[-1]]), axis=0)
-                self.y_seq_len[index] = self.training_max_time_steps
-            elif label_len < self.training_max_time_steps:
-                self.y_train[index] = np.pad(label, 
-                                             (0, self.training_max_time_steps-label.shape[0]+1), 
-                                             'constant', 
-                                             constant_values=0)
-                self.y_seq_len[index] = label_len
-            else:
-                self.y_train[index] = label
-                self.y_seq_len[index] = label_len
+            set_caption(index, id, choice)
         self.ready = True
         
     def set_captions_randomly(self):
         for index in range(len(self.id_train)):
             id = self.id_train[index]
             choice = randrange(0, len(self.label_dict[id]))
-            label = self.sentenceEncoder.transform(self.label_dict[id][choice])
-            label_len = len(label) - 1
-            if label_len > self.training_max_time_steps:
-                self.y_train[index] = np.concatenate((label[:self.training_max_time_steps-1+1], [label[-1]]), axis=0)
-                self.y_seq_len[index] = self.training_max_time_steps
-            elif label_len < self.training_max_time_steps:
-                self.y_train[index] = np.pad(label, 
-                                             (0, self.training_max_time_steps-label.shape[0]+1), 
-                                             'constant', 
-                                             constant_values=0)
-                self.y_seq_len[index] = label_len
-            else:
-                self.y_train[index] = label
-                self.y_seq_len[index] = label_len
+            self.set_caption(index, id, choice)
         self.ready = True
+       
+    def set_caption(self, index, id, choice):
+        label = self.sentenceEncoder.transform(self.label_dict[id][choice])
+        label_len = len(label) - 1
+        if label_len > self.training_max_time_steps:
+            self.y_train[index] = np.concatenate((label[:self.training_max_time_steps-1+1], [label[-1]]), axis=0)
+            self.y_seq_len[index] = self.training_max_time_steps
+        elif label_len < self.training_max_time_steps:
+            self.y_train[index] = np.pad(label, 
+                                         (0, self.training_max_time_steps-label.shape[0]+1), 
+                                         'constant', 
+                                         constant_values=0)
+            self.y_seq_len[index] = label_len
+        else:
+            self.y_train[index] = label
+            self.y_seq_len[index] = label_len
     
     def next_batch(self, batch_size):
         if not self.ready:
@@ -197,6 +199,12 @@ class MSVD():
     
     def get_tags(self):
         return dict((w, i) for i, w in enumerate(self.sentenceEncoder.defaultTags))
+    
+    def get_bias_vector(self):
+        return self.sentenceEncoder.get_bias_vector()
+    
+    def get_word_list(self):
+        return self.sentenceEncoder.get_word_list()
 
 from os.path import join
 
@@ -205,6 +213,7 @@ class Predictions():
         self.msvd = msvd
         self.path = path
         self.predictions = {}
+        print('Predictions initialized')
         
     def add(self, ids, preds):
         for id, pred in zip(ids, preds):
@@ -212,12 +221,73 @@ class Predictions():
             self.predictions[id] = pred
     
     def print(self, preds, numpy=True, sentence=True, formatted='{}'):
+        msgs = []
         for pred in preds:
-            if numpy: print(formatted.format(pred))
-            if sentence: print(formatted.format(self.msvd.sentenceEncoder.inverse_transform(pred)))
+            if numpy:
+                msg = formatted.format(pred)
+                msgs.append(msg)
+                print(msg)
+            if sentence:
+                msg = formatted.format(self.msvd.sentenceEncoder.inverse_transform(pred))
+                msgs.append(msg)
+                print(msg)
+        return msgs
             
     def save(self, filename):
-        with open(filename, 'w') as f:
+        with open(join(self.path, filename), 'w') as f:
             for id, pred in self.predictions.items():
                 f.write('{},{}\n'.format(id, pred))
         print('Saved predictions as {}.'.format(filename))
+
+class MyPrint():
+    def __init__(self, log_file='default.log', enabled=False):
+        self.log_file = log_file
+        self.enabled = enabled
+    def enable(self):
+        self.enabled = True
+    def disable(self):
+        self.enabled = False
+    def print(self, msg):
+        print(msg)
+        if not self.enabled: return
+        with open(self.log_file, 'a') as f:
+            f.write(msg + '\n')
+
+import json
+import numpy as np
+from os.path import join
+
+def word_embedding_loader(method, words, path='.', verbose=False):
+    method = method.lower()
+    if method =='word2vec':
+        embedding_file = 'Word2Vec_reduced.npy'
+    elif method == 'glove':
+        embedding_file = 'GloVe_reduced.npy'
+    elif method == 'fasttext':
+        embedding_file = 'FastText_reduced.npy'
+    else:
+        assert False, 'Error: not supported method [{}]'.format(method)
+    embedding_file = join(path, embedding_file)
+        
+    num_words = len(words)
+    print('Found {} words.'.format(num_words))
+    vocab = {}
+    with open(join(path, 'vocabulary.json'), 'r') as js:
+        content = json.load(js)
+    for id in content:
+        vocab[int(id)] = content[id]
+
+    embeddings = np.load(embedding_file)
+    
+    new_embeddings = np.zeros((num_words, len(embeddings[0])), dtype=np.float32)
+    
+    for id in vocab:
+        if vocab[id] in words:
+            new_embeddings[words.index(vocab[id])] = embeddings[id]
+            if verbose:
+                print('Added {}.'.format(vocab[id]))
+    
+    print('Loaded {} word embedding as shape({}, {}).'.format(method, new_embeddings.shape[0], new_embeddings.shape[1]))
+    
+    return new_embeddings
+            
