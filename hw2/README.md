@@ -85,8 +85,8 @@ rnn_type = 'gru' # 'lstm' or 'gru'
 use_dropout = None # None or a float number (dropout_rate)
 use_attention = True # Fasle or True
 use_scheduled = False # False or True
-sampling_decaying_rate = None # a float between 0~1 e.g. 0.99
+sampling_decaying_rate = None # a float number between 0~1 e.g. 0.99
 sampling_decaying_mode = None # 'linear or 'exponential'
-sampling_decaying_per_epoch = None # an integer
+sampling_decaying_per_epoch = None # an integer number
 use_embedding = 'fasttext' # None, 'word2vec', 'glove', or 'fasttext'
 ```
