@@ -80,11 +80,12 @@ from pprint import pprint
 from random import randrange
 
 class MSVD():
-    def __init__(self, path, training_max_time_steps=40, word_encoding_threshold=None):
+    def __init__(self, path, training_max_time_steps=40, word_encoding_threshold=None, peer_review=False):
         self.path = path
         self.training_max_time_steps = 1
         if training_max_time_steps > 0:
             self.training_max_time_steps = training_max_time_steps
+        self.peer_review = peer_review
         self.id_train = []
         self.id_test = []
         self.label_dict = {}
@@ -133,7 +134,10 @@ class MSVD():
     def load_testing_data(self):
         if self.test_loaded: return
         
-        feature_test_path = join(self.path, 'testing_data/feat')
+        if not self.peer_review:
+            feature_test_path = join(self.path, 'testing_data/feat')
+        else:
+            feature_test_path = join(self.path, 'peer_review/feat')
             
         index = 0
         for file in listdir(feature_test_path):
