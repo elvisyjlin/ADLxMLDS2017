@@ -1,0 +1,3 @@
+For the pink line, I used linear decaying scheduled sampling rate (from 1 to 0) first.
+However, the training process was interrupted at 800 epoch or so.
+Then I loaded it back and re-trained it but accidentally with a sampling rate from 1 to 0 again...
