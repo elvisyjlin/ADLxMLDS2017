@@ -99,6 +99,7 @@ class MSVD():
         self.ready = False
         self.train_loaded = False
         self.test_loaded = False
+        self.num_test = 100
         print('MSVD initialized.')
         
         label_train_path = join(self.path, 'training_label.json')
@@ -136,18 +137,30 @@ class MSVD():
         
         if not self.peer_review:
             feature_test_path = join(self.path, 'testing_data/feat')
+            index = 0
+            for file in listdir(feature_test_path):
+                id = '.'.join(file.split('.')[:-1])
+                path = join(feature_test_path, file)
+
+                self.id_test.append(id)
+                self.x_test[index] = np.load(path)
+                self.x_test_seq_len[index] = self.x_test[index].shape[0]
+                index += 1
         else:
             feature_test_path = join(self.path, 'peer_review/feat')
-            
-        index = 0
-        for file in listdir(feature_test_path):
-            id = '.'.join(file.split('.')[:-1])
-            path = join(feature_test_path, file)
+            index = 0
+            files = listdir(feature_test_path)
+            self.num_test = len(files)
+            self.x_test = np.zeros((self.num_test, 80, 4096), dtype=np.float32)
+            self.x_test_seq_len = np.zeros((self.num_test), dtype=np.int32)
+            for file in files:
+                id = '.'.join(file.split('.')[:-1])
+                path = join(feature_test_path, file)
 
-            self.id_test.append(id)
-            self.x_test[index] = np.load(path)
-            self.x_test_seq_len[index] = self.x_test[index].shape[0]
-            index += 1
+                self.id_test.append(id)
+                self.x_test[index] = np.load(path)
+                self.x_test_seq_len[index] = self.x_test[index].shape[0]
+                index += 1
             
         self.test_loaded = True
         print('Loaded MSVD testing dataset.')
@@ -193,7 +206,7 @@ class MSVD():
                    self.y_seq_len[idx:idx+batch_size]]
     
     def testing_data(self, batch_size):
-        for idx in range(0, 100, batch_size):
+        for idx in range(0, self.num_test, batch_size):
             yield [self.x_test[idx:idx+batch_size], 
                    self.x_test_seq_len[idx:idx+batch_size],
                    self.id_test[idx:idx+batch_size]]

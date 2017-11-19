@@ -48,7 +48,7 @@ if len(sys.argv) == 4:
 else:
     msvd = MSVD(dataset_path, y_max_length, word_encoding_threshold, peer_review=True)
 init_bias_vector = msvd.get_bias_vector()
-predictions = Predictions(msvd, dataset_path)
+predictions = Predictions(msvd)
 num_vocal = len(msvd.sentenceEncoder.word2int)
 word_list = msvd.get_word_list()
 
