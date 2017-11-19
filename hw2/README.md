@@ -69,4 +69,24 @@ use_beamsearch = False
 #### Final Submission
 
 ```python
+y_max_length = 20
+word_encoding_threshold = 1
+
+num_units = 256
+epochs = 420
+batch_size = 50
+optimizer = 'rmsprop' # 'gd', 'adam', or 'rmsprop'
+learning_rate = 0.001
+max_to_keep = 50
+random_every_epoch = True
+shuffle_training_data = True
+
+rnn_type = 'gru' # 'lstm' or 'gru'
+use_dropout = None # None or a float number (dropout_rate)
+use_attention = True # Fasle or True
+use_scheduled = False # False or True
+sampling_decaying_rate = None # a float between 0~1 e.g. 0.99
+sampling_decaying_mode = None # 'linear or 'exponential'
+sampling_decaying_per_epoch = None # an integer
+use_embedding = 'fasttext' # None, 'word2vec', 'glove', or 'fasttext'
 ```

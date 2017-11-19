@@ -16,7 +16,7 @@ y_max_length = 20
 word_encoding_threshold = 1
 
 num_units = 256
-epochs = 4000
+epochs = 420
 batch_size = 50
 optimizer = 'rmsprop' # 'gd', 'adam', or 'rmsprop'
 learning_rate = 0.001

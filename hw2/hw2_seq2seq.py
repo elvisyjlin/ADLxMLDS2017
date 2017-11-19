@@ -16,7 +16,7 @@ y_max_length = 20
 word_encoding_threshold = 1
 
 num_units = 256
-epochs = 4000
+epochs = 420
 batch_size = 50
 optimizer = 'rmsprop' # 'gd', 'adam', or 'rmsprop'
 learning_rate = 0.001
@@ -38,8 +38,6 @@ model_name = sys.argv[2]
 model_file = join(model_folder, model_name)
 
 prediction_file = sys.argv[3]
-save_per_epoch = 50
-load_from_epoch = 1049
 
 print('# {}'.format(model_name))
 
