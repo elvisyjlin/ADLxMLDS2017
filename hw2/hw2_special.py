@@ -48,7 +48,7 @@ use_beamsearch = False
 # In[ ]:
 
 
-from hw2_utils import MSVD
+from hw2_utils_special import MSVD
 
 # dataset_path = 'data_msvd'
 dataset_path = sys.argv[1]
@@ -355,7 +355,7 @@ sess.run(init)
 
 
 import numpy as np
-from hw2_utils import Predictions
+from hw2_utils_special import Predictions
 
 saver = tf.train.Saver(max_to_keep=max_to_keep)
 predictions = Predictions(msvd, 'data_msvd')
@@ -440,7 +440,7 @@ elif 'predict' in mode:
 # In[ ]:
 
 
-from hw2_eval import special_mission
+from hw2_eval_special import special_mission
 special_mission(prediction_name + '_tmp', prediction_name, True)
 from os import remove
 remove(prediction_name + '_tmp')
