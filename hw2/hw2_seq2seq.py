@@ -5,7 +5,7 @@ from os.path import join
 from hw2_utils import MSVD, Predictions, word_embedding_loader
 from hw2_s2vt import S2VT
 
-if len(sys.argv) != 4 || len(sys.argv) != 5:
+if len(sys.argv) != 4 and len(sys.argv) != 5:
 	assert False, 'Error: invalid number of arguments. Predicting should be [hw2.py data_path model_file prediction_file]'
 
 dataset_path = sys.argv[1]
