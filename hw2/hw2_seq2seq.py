@@ -17,7 +17,7 @@ word_encoding_threshold = 1
 
 num_units = 256
 epochs = 420
-batch_size = 50
+batch_size = 1
 optimizer = 'rmsprop' # 'gd', 'adam', or 'rmsprop'
 learning_rate = 0.001
 max_to_keep = 50
@@ -51,7 +51,6 @@ num_vocal = len(msvd.sentenceEncoder.word2int)
 word_list = msvd.get_word_list()
 
 msvd.load_testing_data()
-batch_size = msvd.get_testing_data_size()
 
 s2vt = S2VT(x_dim, num_vocal, num_units, x_max_length, y_max_length, 
             batch_size, optimizer, learning_rate, rnn_type, 
