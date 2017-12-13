@@ -50,11 +50,16 @@ predictions = Predictions(msvd)
 num_vocal = len(msvd.sentenceEncoder.word2int)
 word_list = msvd.get_word_list()
 
+msvd.load_testing_data()
+batch_size = msvd.get_testing_data_size()
+
 s2vt = S2VT(x_dim, num_vocal, num_units, x_max_length, y_max_length, 
             batch_size, optimizer, learning_rate, rnn_type, 
             use_dropout, use_attention, use_scheduled, use_embedding, 
             word_list, y_bias_vector=init_bias_vector)
 tf_embeds, tf_probs, tf_preds, tf_x, tf_x_seq_len, tf_x_max_len, tf_debug = s2vt.build_model_test()
+
+print('Session starting...')
 
 saver = tf.train.Saver(max_to_keep=max_to_keep)
 
@@ -63,11 +68,8 @@ config.gpu_options.allow_growth=True
 sess = tf.Session(config=config)
 init = tf.global_variables_initializer()
 sess.run(init)
-print('Session started')
 
-msvd.load_testing_data()
-
-print('Testing started.')
+print('Testing starting...')
 
 model_file = join('models', '{}.ckpt'.format(model_name))
 saver.restore(sess, model_file)

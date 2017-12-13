@@ -223,6 +223,9 @@ class MSVD():
     def get_word_list(self):
         return self.sentenceEncoder.get_word_list()
 
+    def get_testing_data_size(self):
+        return self.num_test if self.num_test < 50 else 50
+
 from os.path import join
 
 class Predictions():
