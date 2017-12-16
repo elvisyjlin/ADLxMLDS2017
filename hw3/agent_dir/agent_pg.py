@@ -16,7 +16,7 @@ LOSS = 'categorical_crossentropy' # 'categorical_crossentropy' or 'mse'
 NAME = 'pg.pong.{0}.{1}.{2}.{3}'.format(PRE, OPT, LR, LOSS)
 
 # For testing
-NAME = 'pg.pong.h5'
+NAME = 'pg.pong'
 PRE = '2'
 
 MODEL_NAME = '{0}.h5'.format(NAME)
@@ -44,9 +44,9 @@ class Agent_PG(Agent):
         self.probs = []
         
         # Limit the memory usage
-        config = tf.ConfigProto()
-        config.gpu_options.allow_growth=True
-        set_session(tf.Session(config=config))
+        # config = tf.ConfigProto()
+        # config.gpu_options.allow_growth=True
+        # set_session(tf.Session(config=config))
 
         # Build the model
         self.model = self.build_model()

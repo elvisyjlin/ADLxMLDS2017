@@ -16,7 +16,7 @@ PRE = '2'
 NAME = 'pg.a2c.nstep.pong.{0}.{1}.{2}'.format(PRE, OPT, LR)
 
 # For testing
-NAME = 'pg.a2c.pong.h5'
+NAME = 'pg.a2c.pong'
 PRE = '2'
 
 MODEL_NAME = '{0}.h5'.format(NAME)
@@ -56,9 +56,9 @@ class Agent_PG(Agent):
         self.rewards = []
         
         # Limit the memory usage
-        config = tf.ConfigProto()
-        config.gpu_options.allow_growth=True
-        set_session(tf.Session(config=config))
+        # config = tf.ConfigProto()
+        # config.gpu_options.allow_growth=True
+        # set_session(tf.Session(config=config))
 
         # Build the model
         _, _, self.a2c_networks, self.advantage = self.build_models()

@@ -21,7 +21,7 @@ TEST_EPI = 0.01
 
 NAME = 're.{0}.{1}.breakout.{2}.{3}.{4}'.format(QN, DUEL, OPT, LR, FINAL_EPI) # 'ddqn.breakout.adam'
 
-NAME = 'ddqn.max.breakout.h5'
+NAME = 'ddqn.max.breakout'
 QN = 'ddqn'
 DUEL = 'max'
 OPT = 'adam'
@@ -72,9 +72,9 @@ class Agent_DQN(Agent):
         self.episode = 0
         
         # Limit the memory usage
-        config = tf.ConfigProto()
-        config.gpu_options.allow_growth=True
-        set_session(tf.Session(config=config))
+        # config = tf.ConfigProto()
+        # config.gpu_options.allow_growth=True
+        # set_session(tf.Session(config=config))
         
         # Q network and Target network
         self.main_network = self.build_network()
