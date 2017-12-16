@@ -12,16 +12,42 @@ python3 test.py --test_pg --test_dqn
 ```
 
 To train policy gradient agent for Pong: (PG)
+
+Delete or comment
+```python
+NAME = 'pg.pong.h5'
+PRE = '2'
+```
+
+Then do
 ```bash
 python3 main.py --train_pg
 ```
 
 To train advantage actor critic policy gradient agent for Pong: (PG A2C)
+
+Delete or comment
+```python
+NAME = 'pg.a2c.pong.h5'
+PRE = '2'
+```
+
+Then do
 ```bash
 python3 main.py --train_pg_a2c # currently not able to train with TA's sample code
 ```
 
 To train double dueling deep-q-network agent for Breakout: (Dueling DDQN)
+
+Delete or comment
+```python
+NAME = 'ddqn.max.breakout.h5'
+QN = 'ddqn'
+DUEL = 'max'
+OPT = 'adam'
+```
+
+Then do
 ```bash
 python3 main.py --train_dqn
 ```
