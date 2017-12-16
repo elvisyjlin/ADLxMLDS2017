@@ -26,7 +26,7 @@ QN = 'ddqn'
 DUEL = 'max'
 OPT = 'adam'
 
-NETWORK_NAME = 'models/{0}.h5'.format(NAME)
+NETWORK_NAME = '{0}.h5'.format(NAME)
 LOG_NAME = '{0}.log'.format(NAME)
 
 if OPT == 'adam': OPTIMIZER = Adam

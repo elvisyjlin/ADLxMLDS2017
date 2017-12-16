@@ -19,7 +19,7 @@ NAME = 'pg.pong.{0}.{1}.{2}.{3}'.format(PRE, OPT, LR, LOSS)
 NAME = 'pg.pong.h5'
 PRE = '2'
 
-MODEL_NAME = 'models/{0}.h5'.format(NAME)
+MODEL_NAME = '{0}.h5'.format(NAME)
 LOG_NAME = '{0}.log'.format(NAME)
 
 if OPT == 'adam': OPTIMIZER = Adam
