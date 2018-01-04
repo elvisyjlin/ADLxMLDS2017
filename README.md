@@ -13,3 +13,5 @@ Student: CSIE R06922068 Yu-Jing Lin 林裕景
 ### HW 2 - Video Captioning
 
 ### HW 3 - Game Playing
+
+### HW 4 - Generative Adversarial Networks
